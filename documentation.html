@@ -1,0 +1,767 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Node.js API</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="bd742371-e105-464f-a301-63cd494f6f65" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?ixlib=rb-4.0.3&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><img class="icon" src="https://www.notion.so/icons/code_blue.svg"/></div><h1 class="page-title">Node.js API</h1><p class="page-description"></p></header><div class="page-body"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/create-user <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="9efa1999-a9e6-4b16-876c-3ed8405d6907" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="89475fb6-18e4-46e7-a636-034304692ca0" class=""><em>body</em>: </p><p id="56123afe-846c-4ede-9e24-548b69f2c5e2" class=""><mark class="highlight-orange_background">{</mark></p><p id="4f95cbca-266d-4228-b281-e2c1f4475b66" class=""><mark class="highlight-orange_background">“name”: string,</mark></p><p id="feccf2cb-8cbc-4d99-8f9a-6639f6c8a116" class=""><mark class="highlight-orange_background">“email”: string,</mark></p><p id="f1d10314-eb66-44ce-bc19-7631a608479c" class=""><mark class="highlight-orange_background">“wallet_id”: string,</mark></p><p id="1e72a3c6-33ce-4977-ba45-f579632dbeca" class=""><mark class="highlight-orange_background">“password”: string,</mark></p><p id="44b0805c-943a-4d3b-8d58-d92783cdd39b" class=""><mark class="highlight-orange_background">“mobile_no”: string(10)</mark></p><p id="967a3902-94db-4f99-b115-186e20f48750" class=""><mark class="highlight-orange_background">}</mark></p><p id="0b9dc3a2-30c2-46e0-80ae-4c141277ae1d" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="8bda9b3d-c8e9-4ed8-ae7c-2d103b906b15" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="aaeaa428-4908-45dd-a6fb-6393cc6c3637" class="code"><code>{
+status:0,
+message:&quot;User already exist with this email or mobile no&quot;
+}</code></pre><ol type="1" id="5bcef80e-f704-4ee2-b716-faed74fd4af3" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="0881da75-ae68-45b2-99e9-6461d75f45f0" class="code"><code>{
+status:1,
+message:&quot;User Created Successfully! &quot;
+}</code></pre><p id="08358d3f-d2a3-46ea-a869-f23b034fbf78" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/login <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="f342d3d8-bf85-4d14-86d7-81d7d2c0e163" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="d22a316c-6809-4b06-9dd3-3fe27f5a70ae" class=""><em>body</em>: </p><p id="09bed899-11f5-488f-851d-8e358a093f07" class=""><mark class="highlight-orange_background">{</mark></p><p id="8cb0f4b8-59ff-48e6-9074-cd4d66acaa7a" class=""><mark class="highlight-orange_background">“email”: string,</mark></p><p id="2ad1066d-b066-4c1d-aa90-b406f1858ed7" class=""><mark class="highlight-orange_background">“password”: string</mark></p><p id="01718bfc-a882-498b-8018-eec3ffa99738" class=""><mark class="highlight-orange_background">}</mark></p><p id="8713394e-d151-4005-8ab7-5fd7b8e33b7f" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="44e5e924-0754-446b-aed8-d97677078f6e" class="numbered-list" start="1"><li><strong><mark class="highlight-red">500: </mark></strong></li></ol><pre id="a4e57fe5-4e34-47d7-9b3a-830e1f4bf16f" class="code"><code>{
+status:0,
+message:&quot;Incorrect Password!&quot;
+}</code></pre><ol type="1" id="db4c35fe-2449-4c7a-8ab3-ea9742fcd65e" class="numbered-list" start="2"><li><strong><mark class="highlight-teal">200</mark></strong><strong>: </strong></li></ol><pre id="4456cdd5-2376-45a2-b220-60bb5d36f60a" class="code"><code>{
+status:1,
+message:&quot;User Logged In successfully!&quot;,
+token:userToken(string)
+}</code></pre><ol type="1" id="3baac33d-3e1f-482f-a713-59122827f7be" class="numbered-list" start="3"><li><mark class="highlight-red"><strong>501:</strong></mark></li></ol><pre id="218af27d-d04c-4f9f-a5ca-b4cf58def389" class="code"><code>{
+status:0,
+message:&quot;Use dont exist with this email&quot;
+}</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/check-balance <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="19362759-50be-45fb-99f6-e7e5bcde2653" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="78f22362-466d-4fab-b9aa-7b19273039f2" class=""><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></p><p id="3b47f7a8-d47f-4e07-a732-b7c8d7561b30" class="">{</p><p id="08ca43fd-4c1a-49d1-9f1d-7b58635b99c2" class="">“Authorization”: userToken(string)</p><p id="86680c37-f280-4453-ae57-192aabab9af6" class="">}</p><p id="499a4737-81cf-467d-a317-7c28053ecb85" class="">
+</p><p id="74353a56-6e49-4d50-be5e-18b424d35eda" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="6291ea48-6126-444b-8a76-61e4807c8d65" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="b4003603-d15b-4c5c-90f1-ba8b05092259" class="code"><code>{
+status:0,
+message:&quot;Unble to load your balance&quot;
+}</code></pre><ol type="1" id="2ef6c5db-79a9-4885-b03d-8371280ff065" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="ddb08fd8-c4e6-44b3-816c-b207a3a99c20" class="code"><code>{
+status:1,
+balance: userBalance[FLOAT],
+}</code></pre><p id="1e78548d-fcc0-46ea-a4f8-8e2f5a6de17f" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/add-balance <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="66177d0e-e4c0-4cbf-8023-1176b0664b37" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="381f8dcb-6072-4663-ad8b-bf808cf3020b" class=""><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></p><p id="d885a2cf-bee2-489a-ac99-cdd28c4aab48" class=""><mark class="highlight-orange_background">{</mark></p><p id="7807ac2d-d15c-412b-8323-d32ba59ec245" class=""><mark class="highlight-orange_background">“Authorization”: userToken(string)</mark></p><p id="918feebe-7ba9-4bc3-a4a6-f9474ef77b2b" class=""><mark class="highlight-orange_background">}</mark></p><p id="30959622-78c0-4389-a541-f4ab2bfcc4e6" class=""><em><em><em><em><em>body:</em></em></em></em></em></p><p id="1e8eaa0a-3483-4108-ae1f-e639633bf2bc" class=""><mark class="highlight-orange_background">{</mark></p><p id="e99dc548-78d7-41ad-b919-4e695dc4888e" class=""><mark class="highlight-orange_background">“amount”: [FLOAT]</mark></p><p id="ace5b806-a675-49d1-8a5e-a469ef7d7f45" class=""><mark class="highlight-orange_background">}</mark></p><p id="78900ae0-1686-439d-9835-59e6a666c6a0" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="2e168cec-c37a-4f21-af96-311e46617be7" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="e5e9b3f1-d161-448f-b6f8-e6d9aac66ff6" class="code"><code>{
+status:0,
+message: &quot;Failed to Add Balance&quot;,
+transactionId: transactionId[String],
+error: error[String]
+}</code></pre><ol type="1" id="7ff5705b-1790-493d-a9da-ed21b2d0f1ff" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="8796ede7-89bd-47ac-82ff-cf281c19e2bd" class="code"><code>{
+status:1,
+message: &quot;Balance Added successfully&quot;,
+transactionId: transactionId[String],
+balance: [FLOAT]
+}</code></pre><ol type="1" id="f792b172-36f0-419d-a8cf-bb19b37ba8f7" class="numbered-list" start="3"><li><mark class="highlight-red"><strong>501: </strong></mark></li></ol><pre id="53df5f3f-37df-4589-b81e-67148c7c4aa3" class="code"><code>{
+status:0,
+message:&quot;Unable to Add balance&quot;
+}</code></pre></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/transfer <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="a425f456-e8ae-47f0-942e-66d55698ff6d" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="fc94e10f-1fb3-459e-a5b8-3a55bd829ba4" class=""><mark class="highlight-teal"><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></mark></p><p id="083fff68-98c1-44c8-871e-96222fdf7489" class=""><mark class="highlight-orange_background">{</mark></p><p id="72f319eb-88d5-4e88-968e-c96e1fef80ed" class=""><mark class="highlight-orange_background">“Authorization”: userToken(string)</mark></p><p id="613f017a-463d-4087-af26-ebd51a97aa67" class=""><mark class="highlight-orange_background">}</mark></p><p id="236a2dd3-fc61-47c4-8f70-6b1132433896" class=""><mark class="highlight-blue"><em><em><em><em><em>body:</em></em></em></em></em></mark></p><p id="db1d0314-67b4-4671-8c0a-e525408b069a" class=""><mark class="highlight-orange_background">{</mark></p><p id="f0ba7a4b-8fc6-4a94-a867-23b2a294f618" class=""><mark class="highlight-orange_background">“amount”: [FLOAT],</mark></p><p id="36ddcb3b-90b5-48a5-b033-2851c9ee19f8" class=""><mark class="highlight-orange_background">“transferTo”: [INTEGER]</mark></p><p id="c87ceab4-27d7-4fa6-947e-711408fc6aba" class=""><mark class="highlight-orange_background">}</mark></p><p id="1f5bbb83-0307-49fa-bcd4-65f2f13fec25" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="34af1e5c-2b83-4f94-980e-0d324588e590" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="8920320f-6587-4ffa-8808-76566c18a5aa" class="code"><code>{
+status:0,
+message:&quot;Transaction Failed&quot;,
+transactionId: transactionId[String]
+}</code></pre><ol type="1" id="5f2e7fb5-aa11-40a8-a726-b31fcda72cb6" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="47c6d771-5df2-457f-8d96-1e61984999b9" class="code"><code>{
+status:1,
+message:&quot;Transaction Successfull&quot;,
+transactionId: transactionId[String]
+}</code></pre><ol type="1" id="01effc27-5612-414f-8061-7433001bfbc5" class="numbered-list" start="3"><li><mark class="highlight-red"><strong>501: </strong></mark></li></ol><pre id="458851b2-ae18-449a-b317-b95c6943c2e2" class="code"><code>{
+status:0,
+message:&quot;Unable to update Sender Balance&quot;,
+error: error
+}</code></pre><ol type="1" id="7f26c619-0dc6-499b-b831-f4dcba44e046" class="numbered-list" start="4"><li><mark class="highlight-red"><strong>404: </strong></mark></li></ol><pre id="375763a9-1575-4b56-95bc-b786600876be" class="code"><code>{
+status:0,
+message:&quot;Reciever does not exist&quot;,
+}</code></pre><p id="a0402798-e9e8-4753-be91-b4b914a7f274" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/check-status <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="fcd75446-3ac7-4bb4-b451-26226467e116" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="26bee3ec-bcb1-47f9-bed9-9887956f9c7b" class=""><mark class="highlight-teal"><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></mark></p><p id="b0cb9482-a92a-49b8-8eaa-a75eeb90f7e9" class=""><mark class="highlight-orange_background">{</mark></p><p id="53f6d68b-4839-49db-b940-258bde2fefb3" class=""><mark class="highlight-orange_background">“Authorization”: userToken(string)</mark></p><p id="a7e46516-de1e-4e2f-a79b-8527736f5722" class=""><mark class="highlight-orange_background">}</mark></p><p id="e1729f9b-176e-4b9f-a87c-222ea1bf70a0" class=""><mark class="highlight-blue"><em><em><em><em><em>body:</em></em></em></em></em></mark></p><p id="ef13e74f-18bc-43c9-999a-39f7619d4795" class=""><mark class="highlight-orange_background">{</mark></p><p id="b0e3fa42-c399-40e2-bc19-b1b1ff36ec0e" class=""><mark class="highlight-orange_background">“transactionId”: [Sting]</mark></p><p id="2fede9ac-a2a8-4a85-a8c8-b295b28ede23" class=""><mark class="highlight-orange_background">}</mark></p><p id="cc3b309a-433c-4610-98c7-a1fddd9dcdf8" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="c23b9357-ee07-4254-ac68-5e6c56e30db9" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="4ab26f58-f353-4079-8625-f46f58e54d2b" class="code"><code>{
+status:0,
+message: &quot;No record found with this transactionId&quot;
+}</code></pre><ol type="1" id="6bd3cc72-55af-4039-9b21-4a12580aa867" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="82df5f12-2446-4744-9f20-dabeb6b1b26d" class="code"><code>{
+status:1,
+message: &quot;Transaction record Found&quot;,
+transactionStatus: Status[ENUM(&quot;Success&quot;, &quot;Failed&quot;, &quot;Pending&quot;)]
+} </code></pre><ol type="1" id="a0a5d16f-7560-48d0-844d-9189a5aec9b0" class="numbered-list" start="3"><li><mark class="highlight-red"><strong>404: </strong></mark></li></ol><pre id="eeea74ad-1dfa-4fd0-814b-e6be8e2846dc" class="code"><code>{
+status:0,
+message: &quot;User does not exist&quot;
+}</code></pre><p id="818c2696-6d5f-45fb-965f-4702417f590b" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/statement <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="1091df70-80e4-4d02-9efa-17f025a8570f" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="ca069df6-5284-4ac4-9424-523dd4205a83" class=""><mark class="highlight-teal"><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></mark></p><p id="fd543ca9-ba29-404a-a3bf-b8d230b5917a" class=""><mark class="highlight-orange_background">{</mark></p><p id="344cd9b1-b560-4c0d-997e-3b11afbec3d5" class=""><mark class="highlight-orange_background">“Authorization”: userToken(string)</mark></p><p id="6318d5e2-8b39-4622-bfd8-d1f69e8114f1" class=""><mark class="highlight-orange_background">}</mark></p><p id="20981433-607f-4fc5-9aa2-aa1c0d479498" class=""><mark class="highlight-blue"><em><em><em><em><em>body:</em></em></em></em></em></mark></p><p id="87ee5e60-bd8f-44b7-a32a-269defa20ea6" class=""><mark class="highlight-orange_background">{</mark></p><p id="dd7269ac-3303-4e91-8036-abf2da79044e" class=""><mark class="highlight-orange_background">“limit”: [INTEGER]</mark></p><p id="b8ff7682-cf04-4e22-9cb8-0aab0e3968ee" class=""><mark class="highlight-orange_background">}</mark></p><p id="e28ad12d-b628-4125-baa8-97ed68cd0de3" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="0fcc8214-b1f6-4d45-9f4f-ba4e93293107" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="11d4d13a-f764-43ec-a048-7e724013dcd4" class="code"><code>{
+status:0,
+message: &quot;No transaction records found&quot;,
+}</code></pre><ol type="1" id="2c7eef56-1e05-4c7f-a85a-e970dc97308e" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="894e14de-59c9-4ee9-b53c-5c03481f453d" class="code"><code>{
+status: 1,
+message: &quot;{NO OF RECORDS} records found&quot;,
+data:records
+}</code></pre><p id="673b60d5-e7c5-45ff-9b17-2671797a628b" class="">
+</p></div></details><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">/deactivate-user <mark class="highlight-teal">POST</mark></summary><div class="indented"><p id="b4ee2916-8bb9-48d6-af71-00fa8f598c09" class=""><mark class="highlight-orange_background"><span style="border-bottom:0.05em solid">P</span></mark><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>arameters:</strong></mark></span></p><p id="d5c2a3ed-7f83-433f-bd1a-46ae885dc4ac" class=""><mark class="highlight-teal"><em><em><em><em><em><em><em>headers:</em></em></em></em></em></em></em></mark></p><p id="284dced5-57c4-426b-b813-e92c40a322f9" class=""><mark class="highlight-orange_background">{</mark></p><p id="ced48dec-076a-4b5d-974f-ad079c3b74dc" class=""><mark class="highlight-orange_background">“Authorization”: userToken(string)</mark></p><p id="7ee8d995-7993-4219-b777-f79c59073b06" class=""><mark class="highlight-orange_background">}</mark></p><p id="c05b83ac-652c-4e8a-ac5a-e5ac56b96723" class="">
+</p><p id="0169a0fc-231d-4ae4-9ffc-c33eb8a18e7b" class=""><span style="border-bottom:0.05em solid"><strong>Responses</strong></span></p><ol type="1" id="5c72baa5-e00b-470f-b4a7-5b8ff804761b" class="numbered-list" start="1"><li><mark class="highlight-red">500: </mark></li></ol><pre id="5dfcb983-9c51-4b63-886d-9f0e16d79350" class="code"><code>{
+status:0,
+message: &quot;Failed to deactivate user&quot;,
+error: error
+}</code></pre><ol type="1" id="8bcdfde9-0dac-463b-9b0f-c61a898b7b90" class="numbered-list" start="2"><li><mark class="highlight-teal">200</mark>: </li></ol><pre id="9be0b0f9-49bf-4db8-9770-1c00793dc44d" class="code"><code>{
+status: 1,
+message: &quot;User is successfully deactivated&quot;
+}</code></pre><p id="780fd8f0-407f-40ec-80d7-f38cdd646157" class="">
+</p></div></details><p id="87b2ba25-125c-448c-97b3-8a11ac17bc6e" class="">
+</p><h2 id="3349a8b2-897d-4388-afba-5974f0184262" class="">Middleware-checkToken()</h2><p id="6eaf99fd-6148-4e3a-b405-262a2963fd77" class=""><strong>Responses:</strong></p><ol type="1" id="402cf7b9-84e1-43f6-a70f-789ffc4bcee5" class="numbered-list" start="1"><li><mark class="highlight-red"><strong>400:</strong></mark></li></ol><pre id="5402b490-9480-4b34-b37c-e58ca98560c2" class="code"><code>{
+status:0,
+message: &quot;Please provide authorization token&quot;
+}</code></pre><ol type="1" id="c0b9d6d6-6734-452f-8756-ed4770478608" class="numbered-list" start="2"><li><strong><mark class="highlight-red">401:</mark></strong></li></ol><pre id="d0de4c8b-5451-48f9-9e27-8e3718d46347" class="code"><code>{
+status:0,
+message: &quot;Token is not valid&quot;,
+data: error
+}</code></pre><p id="bba1c98c-3b9b-4b4a-8225-22ff8573fea5" class="">
+</p></div></article></body></html>
